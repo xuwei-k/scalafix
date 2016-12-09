@@ -59,12 +59,12 @@ span.hljs-tag, span.hljs-symbol{
 }
     </style><title>scalafix - a Scala rewrite tool</title><script src="scripts.js"></script></head><body><div>
 
-<div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="scalafix-aScalarewritetool" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">scalafix - a Scala rewrite tool<a class=" scalatex-site-Styles-headerLink" href="#scalafix-aScalarewritetool" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /><h2 style="font-weight: 300;color: #ccc;padding: 0px;margin-top: 0px;">0.1.0</h2></div><div class=" scalatex-site-Styles-content">
+<div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="scalafix-aScalarewritetool" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">scalafix - a Scala rewrite tool<a class=" scalatex-site-Styles-headerLink" href="#scalafix-aScalarewritetool" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /><h2 style="font-weight: 300;color: #ccc;padding: 0px;margin-top: 0px;">0.2.0-RC1</h2></div><div class=" scalatex-site-Styles-content">
   
 
 <p>
   
-    <a href="http://stats.lassie.io:8001/scalacenter/scalafix"><img src="http://stats.lassie.io:8001/api/badges/scalacenter/scalafix/status.svg" /></a>
+    <a href="http://drone.geirsson.com:8001/scalacenter/scalafix"><img src="http://drone.geirsson.com:8001/api/badges/scalacenter/scalafix/status.svg" /></a>
     <a href="https://gitter.im/scalacenter/scalafix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/382ebf95f5b4df9275ac203229928db8c8fd5c50/68747470733a2f2f6261646765732e6769747465722e696d2f6f6c6166757270672f7363616c61666d742e737667" alt="Join the chat at https://gitter.im/scalacenter/scalafix" data-canonical-src="https://badges.gitter.im/scalacenter/scalafix.svg" style="max-width:100%;"></a>
 </p>
 <p>
@@ -93,73 +93,32 @@ span.hljs-tag, span.hljs-symbol{
   
 
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Installation" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Installation<a class=" scalatex-site-Styles-headerLink" href="#Installation" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
-  <h1 id="Commandline" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Commandline" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Command line</h1>
-    <p>
-      There are several ways to install the command line interface.
-</p>
-    <h2 id="scalafix.jar" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix.jar" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix.jar</h2>
-
-      <p>
-        You can download a pre-compiled jar from the
-        <a href="https://github.com/scalacenter/scalafix/releases">releases page</a>.
-        Unzip the tar and run <code>bin/scalafix</code>.
-</p>
-    <h2 id="Buildfromsource" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Buildfromsource" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Build from source</h2>
-      <ol>
-        <li>
-          Clone the <a href="https://github.com/scalacenter/scalafix">repo</a>.</li>
-        <li>
-          Run <code>sbt cli/assembly</code>, master branch should pass tests.</li>
-        <li>
-          Run <code>bin/scalafix</code>.
-</li></ol>
-    <h2 id="--help" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#--help" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>--help</h2>
-      Once installed, please refer to the <code>scalafix --help</code> page for
-      usage instructions.
-
-      <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.1.0
-Usage: scalafix [options]
-  --usage  
-        Print usage and exit
-  --help | -h  
-        Print help message and exit
-  --rewrites  &lt;value&gt;
-        Rules to run, one of: ProcedureSyntax, VolatileLazyVal
-  --in-place | -i  
-        If true, writes changes to files instead of printing to stdout.
-  --parallel  
-        If true, uses all available CPUs. If false, runs in single thread.
-  --debug  
-        If true, prints out debug information.
-</code></pre>
-
-    <h2 id="Nailgun" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Nailgun" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Nailgun</h2>
-      Scalafix has support for nailgun, but the setup is quite involved:
-      <ol>
-        <li>
-          Install the <a href="http://www.martiansoftware.com/nailgun/quickstart.html">nailgun client</a>.
-          On OSX, this can be done with <code>homebrew install nailgun</code>.
-          Make sure that <code>ng</code> is in your <code>PATH</code>.</li>
-        <li>
-          Clone the <a href="https://github.com/scalacenter/scalafix">repo</a>.</li>
-        <li>
-          <code>sbt cli/pack</code></li>
-        <li>
-          <code>cd cli/target/pack</code></li>
-        <li>
-          <code>make install</code> (adds <code>scalafix_server_ng</code> to <code>$PATH</code>)</li>
-        <li>
-          Symlink the
-          <a href="https://github.com/scalacenter/scalafix/blob/master/bin/scalafix_ng">scalafix_ng</a> script
-          to your <code>$PATH</code>. Feel free to name the script <code>scalafix</code> instead of <code>scalafix_ng</code>.
-          The script will automatically start the nailgun server if the server is turned off.
-</li></ol>
-  <h1 id="SBT" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#SBT" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>SBT</h1>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.1.0&quot;)
+  <span></span>
+  <h1 id="sbt" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt</h1>
+    <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.2.0-RC1&quot;)
 </code></pre>
     <ul>
       <li>
-        The command <code>sbt scalafix</code> runs all available <a href="#Rewrites">Rewrites</a>.</li></ul>
+        <code>sbt scalafix</code> runs <a href="#Rewrites">Rewrites</a>.</li>
+      <li>
+        Use <code>scalafixRewrites := Seq[String]</code> to configure which rewrites to run.
+        Available options can be imported from <code>scalafix.sbt.rewrite._</code>
+</li></ul>
+  <h1 id="Other" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Other" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Other</h1>
+    Scalafix can be used directly as a compiler plugin:
+    <pre><code class="scala scalatex-site-Styles-highlightMe">// download
+&quot;ch.epfl.scala&quot; %% &quot;scalafix-nsc&quot; % &quot;0.2.0-RC1&quot;
+// compile
+scalac -Xplugin:/path/to/scalafix-nsc.jar mycode.scala
+</code></pre>
+    <ul>
+      <li>
+        Note, the compiler plugin writes fixes directly to source files during
+        compilation.</li>
+      <li>
+        To configure which rewrites to run:
+        <code>-P:scalafix:Rewrite1,scalafix:Rewrite2</code>.
+</li></ul>
 
   
 
@@ -169,6 +128,26 @@ Usage: scalafix [options]
   <p>
     Scalafix is a very new tool, more rewrite rules will come in future releases.
 </p>
+  <h1 id="ExplicitImplicit" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#ExplicitImplicit" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>ExplicitImplicit</h1>
+    Dotty requires implicit <code>val</code>s and <code>def</code>s to explicitly annotate
+    return types.
+    The ExplicitImplicit rewrite inserts the inferred type from the
+    compiler for implicit definitions that are missing an explicit return type.
+    For example,
+
+    <pre><code class="scala scalatex-site-Styles-highlightMe">// before
+implicit val tt = liftedType
+// after
+implicit val tt: TypedType[R] = liftedType
+</code></pre>
+    <ul>
+      <li>
+        scalafix tries to minimize the inserted type signature, by using
+        available variable names in scope.</li>
+      <li>
+        scalafix will insert the fully qualified type name if the type
+        is not in scope.
+</li></ul>
   <h1 id="ProcedureSyntax" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#ProcedureSyntax" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>ProcedureSyntax</h1>
     &quot;Procedure syntax&quot; is not supported in Dotty.
     Methods that use procedure syntax should use regular method syntax instead.
@@ -208,12 +187,21 @@ lazy val x = ...
 
   
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Changelog" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Changelog<a class=" scalatex-site-Styles-headerLink" href="#Changelog" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
+  <h1 id="0.2.0" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.2.0" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.2.0</h1>
+    <ul>
+      <li>
+        First semantic rewrite! See <a href="#ExplicitImplicit">ExplicitImplicit</a></li>
+      <li>
+        Removed command line interface in favor of compiler plugin.
+        Why? To run semantic rewrites, scalafix needs to compile source files.
+        The scalafix command line tool has no aspiration to become a build tool.</li></ul>
   <h1 id="0.1.0" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.1.0" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.1.0</h1>
     <ul>
       <li>
-        New command line tool: <code>scalafix</code>. See <a href="#Commandline">Command line</a>.</li>
+        New command line tool: <code>scalafix</code>.
+        (EDIT: superseded by scalafix-nsc compiler plugin in v0.2)</li>
       <li>
-        New SBT plugin: <code>sbt-scalafix</code>. See <a href="#SBT">SBT</a>.</li>
+        New SBT plugin: <code>sbt-scalafix</code>. See <a href="#sbt">sbt</a>.</li>
       <li>
         Two rewrite rules:
         <a href="#ProcedureSyntax">ProcedureSyntax</a>
@@ -234,7 +222,7 @@ lazy val x = ...
 
 </div><script>
     scalatex.scrollspy.Controller().main(
-      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Installation","children":[{"value":"Command line","children":[{"value":"scalafix.jar","children":[]},{"value":"Build from source","children":[]},{"value":"--help","children":[]},{"value":"Nailgun","children":[]}]},{"value":"SBT","children":[]}]},{"value":"Rewrites","children":[{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Upcoming rewrites...","children":[]}]},{"value":"Changelog","children":[{"value":"0.1.0","children":[]}]}]}]
+      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Installation","children":[{"value":"scalafix.jar","children":[]},{"value":"Build from source","children":[]},{"value":"--help","children":[]},{"value":"Nailgun","children":[]},{"value":"sbt","children":[]},{"value":"Other","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Upcoming rewrites...","children":[]}]},{"value":"Changelog","children":[{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
   )</script><script>
     ['DOMContentLoaded', 'load'].forEach(function(ev){
       addEventListener(ev, function(){
@@ -244,4 +232,4 @@ lazy val x = ...
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
