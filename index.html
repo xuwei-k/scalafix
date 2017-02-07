@@ -59,7 +59,7 @@ span.hljs-tag, span.hljs-symbol{
 }
     </style><title>scalafix - a Scala rewrite tool</title><script src="scripts.js"></script></head><body><div>
 
-<div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="scalafix-aScalarewritetool" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">scalafix - a Scala rewrite tool<a class=" scalatex-site-Styles-headerLink" href="#scalafix-aScalarewritetool" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /><h2 style="font-weight: 300;color: #ccc;padding: 0px;margin-top: 0px;">0.2.1</h2></div><div class=" scalatex-site-Styles-content">
+<div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="scalafix-aScalarewritetool" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">scalafix - a Scala rewrite tool<a class=" scalatex-site-Styles-headerLink" href="#scalafix-aScalarewritetool" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /><h2 style="font-weight: 300;color: #ccc;padding: 0px;margin-top: 0px;">0.2.2</h2></div><div class=" scalatex-site-Styles-content">
   
 
 <p>
@@ -92,7 +92,7 @@ span.hljs-tag, span.hljs-symbol{
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Installation" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Installation<a class=" scalatex-site-Styles-headerLink" href="#Installation" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
 
   <h1 id="sbt" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt</h1>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.2.1&quot;)
+    <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.2.3-SNAPSHOT&quot;)
 </code></pre>
     <ul>
       <li>
@@ -108,7 +108,7 @@ span.hljs-tag, span.hljs-symbol{
   <h1 id="Other" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Other" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Other</h1>
     Scalafix can be used directly as a compiler plugin:
     <pre><code class="scala scalatex-site-Styles-highlightMe">// download
-&quot;ch.epfl.scala&quot; %% &quot;scalafix-nsc&quot; % &quot;0.2.1&quot;
+&quot;ch.epfl.scala&quot; %% &quot;scalafix-nsc&quot; % &quot;0.2.3-SNAPSHOT&quot;
 // compile
 scalac -Xplugin:/path/to/scalafix-nsc.jar mycode.scala
 </code></pre>
@@ -251,4 +251,4 @@ lazy val x = ...
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
