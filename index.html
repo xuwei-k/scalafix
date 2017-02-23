@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><link href="META-INF/resources/webjars/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" /><link href="styles.css" rel="stylesheet" /><link rel="shortcut icon" type="image/png" href="favicon.png" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><style>
+<!DOCTYPE html><html><head><link href="META-INF/resources/webjars/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /><link href="styles.css" rel="stylesheet" /><link rel="shortcut icon" type="image/png" href="favicon.png" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><style>
 .scalatex-site-Styles-headerLink{
   color: #777;
   opacity: 0.05;
@@ -59,7 +59,7 @@ span.hljs-tag, span.hljs-symbol{
 }
     </style><title>scalafix - a Scala rewrite tool</title><script src="scripts.js"></script></head><body><div>
 
-<div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="scalafix-aScalarewritetool" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">scalafix - a Scala rewrite tool<a class=" scalatex-site-Styles-headerLink" href="#scalafix-aScalarewritetool" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /><h2 style="font-weight: 300;color: #ccc;padding: 0px;margin-top: 0px;">0.2.2</h2></div><div class=" scalatex-site-Styles-content">
+<div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="scalafix-aScalarewritetool" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">scalafix - a Scala rewrite tool<a class=" scalatex-site-Styles-headerLink" href="#scalafix-aScalarewritetool" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /><h2 style="font-weight: 300;color: #ccc;padding: 0px;margin-top: 0px;">0.3.0</h2></div><div class=" scalatex-site-Styles-content">
   
 
 <p>
@@ -68,10 +68,11 @@ span.hljs-tag, span.hljs-symbol{
     <a href="https://gitter.im/scalacenter/scalafix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/382ebf95f5b4df9275ac203229928db8c8fd5c50/68747470733a2f2f6261646765732e6769747465722e696d2f6f6c6166757270672f7363616c61666d742e737667" alt="Join the chat at https://gitter.im/scalacenter/scalafix" data-canonical-src="https://badges.gitter.im/scalacenter/scalafix.svg" style="max-width:100%;"></a>
 </p>
 <p>
-  Scalafix is a new tool to help Scala 2.x compile with <a href="http://dotty.epfl.ch/">Dotty</a>,
-  a next generation compiler for Scala.
+  Scalafix is a Scala code rewriting tool and library.
   This effort follows the Scala Center Advisory Board proposal:
   <a href="http://scala-lang.org/blog/2016/05/30/scala-center-advisory-board.html#the-first-meeting">Clarification of Scala to Dotty migration path</a>.
+  The long-term goal of the project is to automate migration from Scala 2.x to <a href="http://dotty.epfl.ch/">Dotty</a>,
+  a next-generation Scala compiler.
 </p>
 <p>
   The name &quot;scalafix&quot; is inspired by
@@ -91,26 +92,113 @@ span.hljs-tag, span.hljs-symbol{
 
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Installation" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Installation<a class=" scalatex-site-Styles-headerLink" href="#Installation" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
 
-  <h1 id="sbt" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt</h1>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.2.3-SNAPSHOT&quot;)
+  <p>
+    Scalafix can used either as a tool or a library.
+    Integrations are currently limited to the command-line, but it may be possible
+    to add IDE integrations in the future.
+</p>
+  <h1 id="sbt-scalafix" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt-scalafix" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt-scalafix</h1>
+    sbt-scalafix is an integration to run pre-made scalafix rewrites as sbt commands.
+
+    <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.3.0&quot;)
 </code></pre>
     <ul>
       <li>
         <code>sbt scalafix</code> runs <a href="#Rewrites">Rewrites</a>.</li>
       <li>
-        Set <code>scalafixConfig in ThisBuild := Some(baseDirectory.value / &quot;.scalafix.conf&quot;)</code>
-        to customize which rewrites to run.
-        See <a href="#Configuration">Configuration</a> for more details.</li>
+        uses scalafix-nsc, a compiler plugin, to run rewrites during compilation.
+        The compiler plugin is disabled by default, <code>scalafixEnabled in ThisBuild := true</code>
+        enables the compiler plugin for your entire build.</li>
+      <li>
+        Configuration is read from <code>.scalafix.conf</code>.
+        See <a href="#Configuration">Configuration</a> for more details on how to customize which rewrites to run.</li>
       <li>
         Scalafix supports 2.11 and 2.12.
         Projects with <code>scalaVersion</code> 2.10 are ignored by scalafix.
 </li></ul>
-  <h1 id="Other" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Other" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Other</h1>
+  <h1 id="sbt-scalahost" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt-scalahost" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt-scalahost</h1>
+    sbt-scalahost is an integration to run custom scalafix rewrites using the scala.meta
+    semantic API.
+
+    <pre><code class="scala scalatex-site-Styles-highlightMe">// project/plugins.sbt
+addSbtPlugin(&quot;org.scalameta&quot; % &quot;sbt-scalahost&quot; % &quot;1.6.0&quot;)
+
+// build.sbt
+val rewrites = projects
+  .settings(
+    scalaVersion := &quot;2.11.8&quot;, // 2.12.x is also supported
+    libraryDependencies += &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.0&quot;
+  )
+  .dependsOn(
+    projectToPerformRewritesOn % Scalameta
+  )
+
+// in rewrites/src/main/scala/Rewrites.scala
+...
+implicit mirror = scala.meta.Mirror()
+val source = mirror.sources.head
+val ctx = scalafix.rewrite.RewriteCtx(source,
+  scalafix.config.ScalafixConfig(), mirror)
+val patched = Patch(source, Seq(
+  scalafix.util.TreePatch.AddGlobalImport(
+    importer&quot;scala.collection.immutable.Seq&quot;))
+)
+...
+</code></pre>
+    For more information about sbt-scalahost, see
+    <a href="https://github.com/scalameta/sbt-semantic-example">sbt-semantic-example</a>.
+    For more information about using scalafix as a library, see <a href="#scalafix-core">scalafix-core</a>.
+
+  <h1 id="scalafix-core" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix-core" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix-core</h1>
+    Scalafix can be used as a library to run custom rewrites.
+    <pre><code class="scala scalatex-site-Styles-highlightMe">libraryDependencies += &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.0&quot;
+</code></pre>
+    By using scalafix as a library, you have full control of how/when/where
+    rewrites are written.
+
+    <p>
+      When writing custom rewrites, you should decide what API you need.
+      There currently available APIs are:
+
+      <ul>
+        <li>
+          Syntactic api. This is the easiest option but also the least powerful options.
+          It does provide access to compilation information such as symbols/types.
+          Just create a <code>scalafix.rewrite.Rewrite[Any]</code> and go!</li>
+        <li>
+          <code>scala.meta.Mirror</code>, aka.
+          <a href="https://github.com/scalameta/scalameta/blob/master/changelog/1.6.0.md#semantic-api">scala.meta semantic API</a>.
+          See <a href="#sbt-scalahost">sbt-scalahost</a> on how to construct a <code>scala.meta.Mirror</code>.
+          Once you have a <code>Mirror</code> instance, you can create a
+          <code>scalafix.rewrite.RewriteCtx[Mirror]</code> for each <code>scala.meta.Source</code> in
+          <code>scala.meta.Mirror.sources</code>.</li>
+        <li>
+          <code>scalafix.rewrite.ScalafixMirror</code>. This option is currently in
+          use by <a href="#sbt-scalafix">sbt-scalafix</a> but is being phased out in favor of
+          <code>Mirror</code>. <code>ScalafixMirror</code> extends <code>Mirror</code> with a
+          few custom methods that we will try to eventually contribute upstream
+          to <code>Mirror</code>.
+          <p>
+            It is possible to run custom rewrites using <code>ScalafixMirror</code>, but
+            the setup is complex.
+            You need to ensure that your compiled rewrite is included in the compiler
+            classpath. Once the rewrite is in the compiler classpath, you
+            can enable your rewrite via <code>.scalafix.conf</code>
+            <code>rewrites = [_root_.fully.qualified.name.to.rewrite.object]</code>.
+            Note, your rewrite needs to be an <code>object</code>.
+            For more question, don't hesitate to ask on Gitter.
+</p></li></ul></p>
+    <p>
+      Scalafix as a library is still under heavy development.
+      Feedback is very welcome.
+      Be prepared for breaking changes.
+</p>
+  <h1 id="scalafix-nsc" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix-nsc" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix-nsc</h1>
     Scalafix can be used directly as a compiler plugin:
     <pre><code class="scala scalatex-site-Styles-highlightMe">// download
-&quot;ch.epfl.scala&quot; %% &quot;scalafix-nsc&quot; % &quot;0.2.3-SNAPSHOT&quot;
+https/repo1.maven.org/maven2/ch/epfl/scala/scalafix-nsc_2.12/0.3.0/scalafix-nsc_2.12-0.3.0.jar
 // compile
-scalac -Xplugin:/path/to/scalafix-nsc.jar mycode.scala
+scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.0.jar mycode.scala
 </code></pre>
     <ul>
       <li>
@@ -125,19 +213,98 @@ scalac -Xplugin:/path/to/scalafix-nsc.jar mycode.scala
   <a href="https://github.com/typesafehub/config">HOCON</a>
   syntax.
   I recommend you put a file <code>.scalafix.conf</code> into the root directory of
-  your project. However, the file can be put anywhere you like.
+  your project.
 
   <h1 id="rewrites" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#rewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>rewrites</h1>
     Available options are listed in <a href="#Rewrites">Rewrites</a>.
 
-    <pre><code>
-      rewrites = [ExplicitImplicit] # No rewrites are run if empty.</code></pre>
+    <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
+      rewrites = [ExplicitImplicit] # No rewrites are run if empty.
+</code></pre>
+  <h1 id="imports" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#imports" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>imports</h1>
+    Scalafix can organize imports for you.
+    If you use import patches such as <code>Add/RemoveGlobalImport</code>,
+    you need to allow scalafix to organize you imports.
+    To minimize the diff from import patches, it's best to run scalafix once
+    with organize imports enabled and no zero patches.
+    <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
+      // Group and sort imports
+      imports.organize = true
+      // Example relative import: `import collection.immutable`
+      // Expanded: `import scala.collection.immutable`
+      imports.expandRelative = true
+      // Removes global imports that -Ywarn-unused-import complains about
+      // Requires sbt-scalafix/ScalafixMirror
+      imports.removeUnused = true
+      // Groups are separated by a blank line, example:
+      // import com.a
+      // import com.b
+      //
+      // import scala.collection.immutable._
+      imports.groups = [
+        &quot;com.mycompany.*&quot;
+        &quot;scala\\..*&quot;
+      ]</code></pre>
+  <h1 id="patches" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#patches" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>patches</h1>
+    For simple use-cases, it's possible to write custom rewrites directly
+    .scalafix.conf.
+    <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
+      patches.removeGlobalImports = [
+        &quot;scala.collection.mutable&quot; # scala.meta.Importee
+      ]
+      patches.addGlobalImports = [
+        &quot;scala.collection.immutable&quot;
+      ]
+      patches.replacements = [
+        {
+          from = &quot;_root_.scala.Seq.&quot; // scala.meta.Symbol
+          to = &quot;Seq&quot;
+          additionalImports = [ &quot;scala.collection.immutable.Seq&quot; ]
+        }
+      ]
+      // Helper to see which symbols appear in your source files
+      debug.printSymbols = true</code></pre>
+    For more advanced use-cases, I recommend you use <a href="#scalafix-core">scalafix-core</a>
+    as a library.
+
+  <h1 id="Availableoptions" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Availableoptions" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Available options</h1>
+
+    The following is the list of all available options along with their
+    default values.
+    <pre><code class="scala scalatex-site-Styles-highlightMe">rewrites = [
+  ProcedureSyntax
+  ExplicitImplicit
+  Xor2Either
+]
+patches.removeGlobalImports = []
+patches.addGlobalImports = []
+patches.replacements = []
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@5d364f8b
+debug.printSymbols = false
+fatalWarnings = true
+dialect = Scala211
+imports.organize = true
+imports.alwaysUsed = []
+imports.expandRelative = true
+imports.groups = [
+  &quot;scala.language.*&quot;
+  &quot;(scala|scala\..*)$&quot;
+  &quot;(java|java\..*)$&quot;
+  &quot;.*&quot;
+]
+imports.removeUnused = true
+imports.groupByPrefix = false
+imports.spaceAroundCurlyBrace = false</code></pre>
+
 
   
 
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Rewrites" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Rewrites<a class=" scalatex-site-Styles-headerLink" href="#Rewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
   <p>
-    Scalafix is a new tool, more rewrite rules are planned for future releases.
+    Scalafix comes with a few rewrites out-of-the-box.
+    These rewrites have been chosen to meet the long-term goal of scalafix to
+    <a href="http://scala-lang.org/blog/2016/05/30/scala-center-advisory-board.html#the-first-meeting">clarify the Scala to Dotty migration path</a>.
+    To create custom rewrites, see <a href="#scalafix-core">scalafix-core</a>.
 </p>
   <h1 id="ExplicitImplicit" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#ExplicitImplicit" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>ExplicitImplicit</h1>
     Dotty requires implicit <code>val</code>s and <code>def</code>s to explicitly annotate
@@ -193,13 +360,45 @@ lazy val x = ...
       comparable-if-not-faster than the scheme used in scalac.
 
 </p>
-  <h1 id="Upcomingrewrites..." style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Upcomingrewrites..." style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Upcoming rewrites...</h1>
-    <ul>
-      <li>
-        <code>XML</code>: see <a href="https://github.com/scalacenter/scalafix/issues/10">#10</a>.</li></ul>
+  <h1 id="Plannedrewrites..." style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Plannedrewrites..." style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Planned rewrites...</h1>
+    See <a href="https://github.com/scalacenter/scalafix/issues?q=is%3Aissue+is%3Aopen+label%3Arewrite">here</a>
 
   
+
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Changelog" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Changelog<a class=" scalatex-site-Styles-headerLink" href="#Changelog" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
+  <h1 id="0.3.0" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.3.0" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.3.0</h1>
+    <ul>
+      <li>
+        Scalafix now uses the scala.meta semantic API!
+        See <a href="https://github.com/scalameta/scalameta/blob/master/changelog/1.6.0.md#semantic-api">scala.meta 1.6 release notes</a>
+        for more details about the semantic api.
+        This first release of the scala.meta semantic API enables rewrites to query for the &quot;symbol&quot;
+        of a name that appears in a Scala source file.
+        A symbol is a unique identifier of a definition such as a class, val, def or trait.</li>
+      <li>
+        Rewrites can now be implemented in terms of &quot;tree patches&quot;, which are high
+        level descriptions of common refactorings.
+        Tree patches can be composed as Lego blocks to build advanced refactorings
+        such as <code>Xor2Either</code>.
+        The current available tree patches are
+        <ul>
+          <li>
+            <code>Replace</code>: Replaces usage of a symbol with another name.</li>
+          <li>
+            <code>AddGlobalImport</code>: Adds a top-level import to source file.</li>
+          <li>
+            <code>RemoveGlobalImport</code>: Removes a top-level import from source file.</li></ul>
+        <p>
+          Special thanks go to <a href="https://github.com/ShaneDelmore">@ShaneDelmore</a> for helping out try the
+          scalafix patch API at every step of its development. His feedback has
+          been invaluable in improving the design of the API.</p></li>
+      <li>
+        To demonstrate the capabilities of rewrites using the scala.meta API,
+        we have included an example rewrite called <a href="https://github.com/scalacenter/scalafix/blob/master/core/src/main/scala/scalafix/rewrite/Xor2Either.scala">Xor2Either</a>.
+        The rewrite migrates usage of <code>cats.data.Xor</code> to <code>scala.util.Either</code>.</li>
+      <li>
+        Configuration in .scalafix.conf has been greatly improved to support a wide range
+        of options.</li></ul>
   <h1 id="0.2.1" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.2.1" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.2.1</h1>
     <ul>
       <li>
@@ -221,7 +420,7 @@ lazy val x = ...
         New command line tool: <code>scalafix</code>.
         (EDIT: superseded by scalafix-nsc compiler plugin in v0.2)</li>
       <li>
-        New SBT plugin: <code>sbt-scalafix</code>. See <a href="#sbt">sbt</a>.</li>
+        New SBT plugin: <code>sbt-scalafix</code>. See <a href="#sbt-scalafix">sbt-scalafix</a>.</li>
       <li>
         Two rewrite rules:
         <a href="#ProcedureSyntax">ProcedureSyntax</a>
@@ -230,18 +429,11 @@ lazy val x = ...
 </div>
 
 
-
-  <script>
-    function closeSidebar() {
-      document.getElementsByClassName("scalatex-scrollspy-Styles-menu")[0].children[1].click()
-    }
-    window.onload = closeSidebar
-  </script>
-
+<span></span>
 
 </div><script>
     scalatex.scrollspy.Controller().main(
-      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt","children":[]},{"value":"Other","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Upcoming rewrites...","children":[]}]},{"value":"Changelog","children":[{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
+      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"sbt-scalahost","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-nsc","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"Available options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
   )</script><script>
     ['DOMContentLoaded', 'load'].forEach(function(ev){
       addEventListener(ev, function(){
@@ -251,4 +443,4 @@ lazy val x = ...
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
