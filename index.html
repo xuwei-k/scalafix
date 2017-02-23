@@ -267,7 +267,7 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.0.jar mycode.scala
     For more advanced use-cases, I recommend you use <a href="#scalafix-core">scalafix-core</a>
     as a library.
 
-  <h1 id="Availableoptions" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Availableoptions" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Available options</h1>
+  <h1 id="Alloptions" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Alloptions" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>All options</h1>
 
     The following is the list of all available options along with their
     default values.
@@ -279,7 +279,7 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.0.jar mycode.scala
 patches.removeGlobalImports = []
 patches.addGlobalImports = []
 patches.replacements = []
-parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@5d364f8b
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@a382d98
 debug.printSymbols = false
 fatalWarnings = true
 dialect = Scala211
@@ -376,9 +376,13 @@ lazy val x = ...
         of a name that appears in a Scala source file.
         A symbol is a unique identifier of a definition such as a class, val, def or trait.</li>
       <li>
+        To demonstrate the capabilities of rewrites using the scala.meta semantic API,
+        we have included an example rewrite called <a href="https://github.com/scalacenter/scalafix/blob/master/core/src/main/scala/scalafix/rewrite/Xor2Either.scala">Xor2Either</a>.
+        The rewrite migrates usage of <code>cats.data.Xor</code> to <code>scala.util.Either</code>.</li>
+      <li>
         Rewrites can now be implemented in terms of &quot;tree patches&quot;, which are high
-        level descriptions of common refactorings.
-        Tree patches can be composed as Lego blocks to build advanced refactorings
+        level descriptions of common refactoring operations.
+        Tree patches can be composed to build more advanced refactorings
         such as <code>Xor2Either</code>.
         The current available tree patches are
         <ul>
@@ -393,12 +397,9 @@ lazy val x = ...
           scalafix patch API at every step of its development. His feedback has
           been invaluable in improving the design of the API.</p></li>
       <li>
-        To demonstrate the capabilities of rewrites using the scala.meta API,
-        we have included an example rewrite called <a href="https://github.com/scalacenter/scalafix/blob/master/core/src/main/scala/scalafix/rewrite/Xor2Either.scala">Xor2Either</a>.
-        The rewrite migrates usage of <code>cats.data.Xor</code> to <code>scala.util.Either</code>.</li>
-      <li>
         Configuration in .scalafix.conf has been greatly improved to support a wide range
-        of options.</li></ul>
+        of options.
+        Examples, see <a href="#patches">patches</a>, <a href="#imports">imports</a> and <a href="#Alloptions">All options</a>.</li></ul>
   <h1 id="0.2.1" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.2.1" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.2.1</h1>
     <ul>
       <li>
@@ -433,7 +434,7 @@ lazy val x = ...
 
 </div><script>
     scalatex.scrollspy.Controller().main(
-      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"sbt-scalahost","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-nsc","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"Available options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
+      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"sbt-scalahost","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-nsc","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"All options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
   )</script><script>
     ['DOMContentLoaded', 'load'].forEach(function(ev){
       addEventListener(ev, function(){
@@ -443,4 +444,4 @@ lazy val x = ...
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
