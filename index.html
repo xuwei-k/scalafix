@@ -65,7 +65,7 @@ span.hljs-tag, span.hljs-symbol{
 <p>
   
     <a href="http://drone.geirsson.com:8001/scalacenter/scalafix"><img src="http://drone.geirsson.com:8001/api/badges/scalacenter/scalafix/status.svg" /></a>
-    <a href="https://gitter.im/scalacenter/scalafix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/382ebf95f5b4df9275ac203229928db8c8fd5c50/68747470733a2f2f6261646765732e6769747465722e696d2f6f6c6166757270672f7363616c61666d742e737667" alt="Join the chat at https://gitter.im/scalacenter/scalafix" data-canonical-src="https://badges.gitter.im/scalacenter/scalafix.svg" style="max-width:100%;"></a>
+  <a href="https://gitter.im/scalacenter/scalafix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/382ebf95f5b4df9275ac203229928db8c8fd5c50/68747470733a2f2f6261646765732e6769747465722e696d2f6f6c6166757270672f7363616c61666d742e737667" alt="Join the chat at https://gitter.im/scalacenter/scalafix" data-canonical-src="https://badges.gitter.im/scalacenter/scalafix.svg" style="max-width:100%;"></a>
 </p>
 <p>
   Scalafix is a Scala code rewriting tool and library.
@@ -216,10 +216,24 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.2.jar mycode.scala
   your project.
 
   <h1 id="rewrites" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#rewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>rewrites</h1>
-    Available options are listed in <a href="#Rewrites">Rewrites</a>.
+    You can either run a pre-made that comes with scalafix or a custom rewrite
+    that you write yourself.
 
-    <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
-      rewrites = [ExplicitImplicit] # No rewrites are run if empty.
+    <h2 id="Pre-maderewrites" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Pre-maderewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Pre-made rewrites</h2>
+      Available rewrites are listed in <a href="#Rewrites">Rewrites</a>.
+
+      <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
+        rewrites = [ExplicitImplicit] # No rewrites are run if empty.
+</code></pre>
+    <h2 id="Customrewrites" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Customrewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Custom rewrites</h2>
+      <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
+        rewrites = [
+          &quot;file:rewrites/MyRewrite.scala&quot; // from local file
+          // from url
+          &quot;https://gist.githubusercontent.com/olafurpg/fc6f43a695ac996bd02000f45ed02e63/raw/5c71c5444174130531021c2c39b0b3ccef30ef00/ExampleRewrite.scala&quot;
+          // from fully qualified name on classpath
+          &quot;scala:scalafix.rewrite.ExplicitImplicit&quot;
+        ]
 </code></pre>
   <h1 id="imports" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#imports" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>imports</h1>
 
@@ -284,7 +298,7 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.2.jar mycode.scala
 patches.removeGlobalImports = []
 patches.addGlobalImports = []
 patches.replacements = []
-parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@32bb5c
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@4e11044e
 debug.printSymbols = false
 fatalWarnings = true
 dialect = Scala211
@@ -371,6 +385,8 @@ lazy val x = ...
 
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="FAQ/Troubleshooting" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">FAQ / Troubleshooting<a class=" scalatex-site-Styles-headerLink" href="#FAQ/Troubleshooting" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
 
+  If you have any questions, don't hesitate to ask on Gitter. <a href="https://gitter.im/scalacenter/scalafix?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img src="https://camo.githubusercontent.com/382ebf95f5b4df9275ac203229928db8c8fd5c50/68747470733a2f2f6261646765732e6769747465722e696d2f6f6c6166757270672f7363616c61666d742e737667" alt="Join the chat at https://gitter.im/scalacenter/scalafix" data-canonical-src="https://badges.gitter.im/scalacenter/scalafix.svg" style="max-width:100%;"></a>
+
   <h1 id="Enclosingtree[2873]doesnotincludetree[2872]" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Enclosingtree[2873]doesnotincludetree[2872]" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Enclosing tree [2873] does not include tree [2872]</h1>
     Scalafix  requires code to compile with the scalac option <code>-Yrangepos</code>.
     A macro that emits invalid tree positions is usually the cause of
@@ -378,11 +394,39 @@ lazy val x = ...
     Other tools like the presentation compiler (ENSIME) or
     scala.meta semantic api also require <code>-Yrangepos</code> to work properly.
 
+  <h1 id="sbt.Init$RuntimeUndefined:Referencestoundefinedsettingsatruntime." style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt.Init$RuntimeUndefined:Referencestoundefinedsettingsatruntime." style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt.Init$RuntimeUndefined: References to undefined settings at runtime.</h1>
+    You might be using an old version of sbt.
+    sbt-scalafix requires sbt 0.13.13 or higher.
+
+  <h1 id="(root/compile:compileIncremental)java.lang.reflect.InvocationTargetException" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#(root/compile:compileIncremental)java.lang.reflect.InvocationTargetException" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>(root/compile:compileIncremental) java.lang.reflect.InvocationTargetException</h1>
+    You might have a typo in <code>.scalafix.conf</code>,
+    run <code>last root/compile:compileIncremental</code> to see the full stack trace.
 
 
   
 
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Changelog" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Changelog<a class=" scalatex-site-Styles-headerLink" href="#Changelog" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
+  <h1 id="0.3.2" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.3.2" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.3.2</h1>
+    See <a href="https://github.com/scalacenter/scalafix/milestone/2?closed=1">merged PRs</a>.
+    <ul>
+      <li>
+        It is possible to load custom rewrites from source with
+        <code>rewrites = [&quot;file:MyRewrite.scala&quot;]</code> or urls
+        <code>rewrites = [&quot;https://gist./../.Rewrite.scala&quot;]</code>.
+        See <a href="#Customrewrites">Custom rewrites</a> for more info.</li>
+      <li>
+        <code>imports.groups = []</code> can now be empty, thank you <a href="https://github.com/mlangc">@mlangc</a>
+        for contributing this fix!</li>
+      <li>
+        Named imports are no longer subsumed by wildcard imports, which could
+        previously introduce ambiguous imports.</li>
+      <li>
+        <code>imports.expandRelative = false</code> by default.
+        Expanded relative imports can create unused imports.
+        If you want to expand relative imports, you may need to run scalafix twice
+        to remove unused imports created by scalafix.</li>
+      <li>
+        Fixed minor ordering bugs in organize imports.</li></ul>
   <h1 id="0.3.1" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#0.3.1" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>0.3.1</h1>
     <ul>
       <li>
@@ -467,7 +511,7 @@ lazy val x = ...
 
 </div><script>
     scalatex.scrollspy.Controller().main(
-      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"sbt-scalahost","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-nsc","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"All options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"FAQ / Troubleshooting","children":[{"value":"Enclosing tree [2873] does not include tree [2872]","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.1","children":[]},{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
+      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"sbt-scalahost","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-nsc","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[{"value":"Pre-made rewrites","children":[]},{"value":"Custom rewrites","children":[]}]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"All options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"FAQ / Troubleshooting","children":[{"value":"Enclosing tree [2873] does not include tree [2872]","children":[]},{"value":"sbt.Init$RuntimeUndefined: References to undefined settings at runtime.","children":[]},{"value":"(root/compile:compileIncremental) java.lang.reflect.InvocationTargetException","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.2","children":[]},{"value":"0.3.1","children":[]},{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
   )</script><script>
     ['DOMContentLoaded', 'load'].forEach(function(ev){
       addEventListener(ev, function(){
@@ -477,4 +521,4 @@ lazy val x = ...
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
