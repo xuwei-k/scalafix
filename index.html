@@ -149,12 +149,15 @@ val patched = Patch(source, Seq(
 
   <h1 id="scalafix-core" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix-core" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix-core</h1>
     Scalafix can be used as a library to run custom rewrites.
-    <pre><code class="scala scalatex-site-Styles-highlightMe">libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.2&quot; cross CrossVersion.full
+    <pre><code class="scala scalatex-site-Styles-highlightMe">// &lt; 0.3.3
+libraryDependencies += &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.2&quot;
+// 0.3.3 and onwards
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.2&quot; cross CrossVersion.full
 
 // pre-release version
 resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;)
-resolvers += Resolver.bintrayIvyRepo(&quot;scalameta&quot;, &quot;maven&quot;) // will be unnecessary soon
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.3+13-8f46a646&quot; cross CrossVersion.full
+resolvers += Resolver.bintrayIvyRepo(&quot;scalameta&quot;, &quot;maven&quot;) // will be unnecessary in the future
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.3+14-5b146680&quot; cross CrossVersion.full
 </code></pre>
     By using scalafix as a library, you have full control of how/when/where
     rewrites are written.
@@ -207,7 +210,7 @@ libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &
       Once you have the <code>coursier</code> command-line installed, run
 
       <pre><code class="scala scalatex-site-Styles-highlightMe">// pre-release
-coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.8:0.3.3+13-8f46a646 -r bintray:scalameta/maven -r 'ivy:https://dl.bintray.com/scalameta/maven/[organisation]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]' -f --main scalafix.cli.Cli -o scalafix
+coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.8:0.3.3+14-5b146680 -r bintray:scalameta/maven -r 'ivy:https://dl.bintray.com/scalameta/maven/[organisation]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]' -f --main scalafix.cli.Cli -o scalafix
 </code></pre>
       <p>
         The <code>fatcli</code> module depends on the <code>scalahost-nsc</code> compiler plugin
@@ -218,7 +221,7 @@ coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.8:0.3.3+13-8f46a646 -r bin
         Once the scalafix cli is installed, consult the help page for further usage
         instructions
 </p></p>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.3+13-8f46a646
+    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.3+14-5b146680
 Usage: scalafix [options]
   --usage  
         Print usage and exit
@@ -268,7 +271,8 @@ Examples:
   $ cat .scalafix.conf
   rewrites = [ProcedureSyntax]
   $ scalafix Code.scala # Same as --rewrites ProcedureSyntax
-  scalafix -i --rewrites ProcedureSyntax Code.scala # write fixed file in-place
+  $ scalafix -i --rewrites ProcedureSyntax Code.scala # write fixed file in-place
+
 Exit status codes:
  Ok=0
  UnexpectedError=1
@@ -282,7 +286,7 @@ Exit status codes:
     <p>
       Scalafix can be used directly as a compiler plugin:
       <pre><code class="scala scalatex-site-Styles-highlightMe">// download
-https/repo1.maven.org/maven2/ch/epfl/scala/scalafix-nsc_2.12/0.3.2/scalafix-nsc_2.12-0.3.2.jar
+https://repo1.maven.org/maven2/ch/epfl/scala/scalafix-nsc_2.12/0.3.2/scalafix-nsc_2.12-0.3.2.jar
 // compile
 scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.2.jar mycode.scala
 </code></pre>
@@ -308,18 +312,16 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.2.jar mycode.scala
     <h2 id="Pre-maderewrites" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Pre-maderewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Pre-made rewrites</h2>
       Available rewrites are listed in <a href="#Rewrites">Rewrites</a>.
 
-      <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
-        rewrites = [ExplicitImplicit] # No rewrites are run if empty.
+      <pre><code class="scala scalatex-site-Styles-highlightMe">rewrites = [ExplicitImplicit] # No rewrites are run if empty.
 </code></pre>
     <h2 id="Customrewrites" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Customrewrites" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Custom rewrites</h2>
-      <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
-        rewrites = [
-          &quot;file:rewrites/MyRewrite.scala&quot; // from local file
-          // from url
-          &quot;https://gist.githubusercontent.com/olafurpg/fc6f43a695ac996bd02000f45ed02e63/raw/5c71c5444174130531021c2c39b0b3ccef30ef00/ExampleRewrite.scala&quot;
-          // from fully qualified name on classpath
-          &quot;scala:scalafix.rewrite.ExplicitImplicit&quot;
-        ]
+      <pre><code class="scala scalatex-site-Styles-highlightMe">rewrites = [
+  &quot;file:rewrites/MyRewrite.scala&quot; // from local file
+  // from url
+  &quot;https://gist.githubusercontent.com/olafurpg/fc6f43a695ac996bd02000f45ed02e63/raw/5c71c5444174130531021c2c39b0b3ccef30ef00/ExampleRewrite.scala&quot;
+  // from fully qualified name on classpath
+  &quot;scala:scalafix.rewrite.ExplicitImplicit&quot;
+]
 </code></pre>
   <h1 id="imports" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#imports" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>imports</h1>
 
@@ -332,43 +334,41 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.2.jar mycode.scala
       you need to allow scalafix to organize you imports.
       To minimize the diff from import patches, it's best to run scalafix once
       with organize imports enabled and no zero patches.
-      <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
-        // Group and sort imports
-        imports.organize = true
-        // Example relative import: `import collection.immutable`
-        // Expanded: `import scala.collection.immutable`
-        imports.expandRelative = true
-        // Removes global imports that -Ywarn-unused-import complains about
-        // Requires sbt-scalafix/ScalafixMirror
-        imports.removeUnused = true
-        // Groups are separated by a blank line, example:
-        // import com.a
-        // import com.b
-        //
-        // import scala.collection.immutable._
-        imports.groups = [
-          &quot;com.mycompany.*&quot;
-          &quot;scala\\..*&quot;
-        ]</code></pre></p>
+      <pre><code class="scala scalatex-site-Styles-highlightMe">// Group and sort imports
+imports.organize = true
+// Example relative import: `import collection.immutable`
+// Expanded: `import scala.collection.immutable`
+imports.expandRelative = true
+// Removes global imports that -Ywarn-unused-import complains about
+// Requires sbt-scalafix/ScalafixMirror
+imports.removeUnused = true
+// Groups are separated by a blank line, example:
+// import com.a
+// import com.b
+//
+// import scala.collection.immutable._
+imports.groups = [
+  &quot;com.mycompany.*&quot;
+  &quot;scala\\..*&quot;
+]</code></pre></p>
   <h1 id="patches" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#patches" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>patches</h1>
     For simple use-cases, it's possible to write custom rewrites directly
     .scalafix.conf.
-    <pre><code class="scala scalatex-site-Styles-highlightMe hljs">
-      patches.removeGlobalImports = [
-        &quot;scala.collection.mutable&quot; # scala.meta.Importee
-      ]
-      patches.addGlobalImports = [
-        &quot;scala.collection.immutable&quot;
-      ]
-      patches.replacements = [
-        {
-          from = &quot;_root_.scala.Seq.&quot; // scala.meta.Symbol
-          to = &quot;Seq&quot;
-          additionalImports = [ &quot;scala.collection.immutable.Seq&quot; ]
-        }
-      ]
-      // Helper to see which symbols appear in your source files
-      debug.printSymbols = true</code></pre>
+    <pre><code class="scala scalatex-site-Styles-highlightMe">patches.removeGlobalImports = [
+  &quot;scala.collection.mutable&quot; # scala.meta.Importee
+]
+patches.addGlobalImports = [
+  &quot;scala.collection.immutable&quot;
+]
+patches.replacements = [
+  {
+    from = &quot;_root_.scala.Seq.&quot; // scala.meta.Symbol
+    to = &quot;Seq&quot;
+    additionalImports = [ &quot;scala.collection.immutable.Seq&quot; ]
+  }
+]
+// Helper to see which symbols appear in your source files
+debug.printSymbols = true</code></pre>
     For more advanced use-cases, I recommend you use <a href="#scalafix-core">scalafix-core</a>
     as a library.
 
@@ -380,7 +380,7 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.2.jar mycode.scala
 patches.removeGlobalImports = []
 patches.addGlobalImports = []
 patches.replacements = []
-parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@272cafb7
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@77b3d6a5
 debug.printSymbols = false
 fatalWarnings = true
 dialect = Scala211
@@ -496,10 +496,10 @@ lazy val x = ...
         <code>CrossVersion.full</code>, meaning the artifact IDs now have a <code>_2.11.8</code> suffix. To depend on them,
         <pre><code class="scala scalatex-site-Styles-highlightMe">// OK
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.3+13-8f46a646&quot; cross CrossVersion.full
+  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.3+14-5b146680&quot; cross CrossVersion.full
 // Error
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.3+13-8f46a646&quot;</code></pre></li>
+  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.3+14-5b146680&quot;</code></pre></li>
       <li>
         NOTE.
         This version depends on a pre-release of scala.meta, which is publised
@@ -627,4 +627,4 @@ libraryDependencies +=
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
