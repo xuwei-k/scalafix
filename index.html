@@ -156,7 +156,7 @@ libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &
 
 // pre-release version
 resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;)
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+1-cbaa8646&quot; cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+24-b98411b0&quot; cross CrossVersion.full
 </code></pre>
     By using scalafix as a library, you have full control of how/when/where
     rewrites are written.
@@ -209,7 +209,7 @@ libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &
       Once you have the <code>coursier</code> command-line installed, run
 
       <pre><code class="scala scalatex-site-Styles-highlightMe">// pre-release
-coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.10:0.3.4+1-cbaa8646 -r bintray:scalameta/maven -r 'ivy:https://dl.bintray.com/scalameta/maven/[organisation]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]' -f --main scalafix.cli.Cli -o scalafix
+coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.11:0.3.4+24-b98411b0 -r bintray:scalameta/maven -r 'ivy:https://dl.bintray.com/scalameta/maven/[organisation]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]' -f --main scalafix.cli.Cli -o scalafix
 </code></pre>
       <p>
         The <code>fatcli</code> module depends on the <code>scalahost-nsc</code> compiler plugin
@@ -220,7 +220,7 @@ coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.10:0.3.4+1-cbaa8646 -r bin
         Once the scalafix cli is installed, consult the help page for further usage
         instructions
 </p></p>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.4+1-cbaa8646
+    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.4+24-b98411b0
 Usage: scalafix [options]
   --usage  
         Print usage and exit
@@ -264,6 +264,8 @@ Usage: scalafix [options]
         If true, run on single thread. If false (default), use all available cores.
   --debug  
         If true, prints out debug information.
+  --no-sys-exit  
+        If true, does not sys.exit at the end. Useful for example in sbt-scalafix.
 
 Examples:
   $ scalafix --rewrites ProcedureSyntax Code.scala # print fixed file to stdout
@@ -318,7 +320,7 @@ scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.4.jar mycode.scala
       <pre><code class="scala scalatex-site-Styles-highlightMe">rewrites = [
   &quot;file:readme/MyRewrite.scala&quot; // from local file
   // from url
-  &quot;https://gist.githubusercontent.com/olafurpg/fc6f43a695ac996bd02000f45ed02e63/raw/5c71c5444174130531021c2c39b0b3ccef30ef00/ExampleRewrite.scala&quot;
+  &quot;https://gist.githubusercontent.com/olafurpg/fc6f43a695ac996bd02000f45ed02e63/raw/ff0a1a8c71936bb3d06f804274dc042131fd8392/ExampleRewrite.scala&quot;
   // from fully qualified name on classpath
   &quot;scala:scalafix.rewrite.ExplicitImplicit&quot;
 ]
@@ -376,17 +378,17 @@ debug.printSymbols = true</code></pre>
 
     The following is the list of all available options along with their
     default values.
-    <pre><code class="scala scalatex-site-Styles-highlightMe">rewrites = []
-patches.removeGlobalImports = []
+    <pre><code class="scala scalatex-site-Styles-highlightMe">patches.removeGlobalImports = []
 patches.addGlobalImports = []
 patches.replacements = []
-reporter.outStream = java.io.PrintStream@2ee52346
+reporter.outStream = java.io.PrintStream@3c62579d
 reporter.minSeverity = &quot;[34minfo[0m&quot;
 reporter.filter.&quot;.*&quot;
 reporter.includeLoggerName = false
-parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@2a059a24
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@31a933a4
 debug.printSymbols = false
 fatalWarnings = true
+rewrite = empty
 dialect = Scala211
 imports.organize = false
 imports.alwaysUsed = []
@@ -396,7 +398,7 @@ imports.groups = [
   &quot;(scala|scala\..*)$&quot;
   &quot;(java|java\..*)$&quot;
 ]
-imports.removeUnused = true
+imports.removeUnused = false
 imports.groupByPrefix = false
 imports.spaceAroundCurlyBrace = false</code></pre>
 
@@ -480,7 +482,7 @@ lazy val x = ...
     scalafix-testkit
 
     <pre><code class="scala scalatex-site-Styles-highlightMe">resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;)
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+1-cbaa8646&quot; % Test cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+24-b98411b0&quot; % Test cross CrossVersion.full
 </code></pre></p>
   <p>
     Tests are written in <code>.source</code> text files in some directory
@@ -505,14 +507,11 @@ object ExpectedCode</code></pre></p>
 import scalafix.testkit._
 
 class SemanticTests
-    extends SemanticRewriteSuite(
-      // Classpath to compile .source files. In the scalafix repo, the classpath
-      // is passed in from build.sbt as a system property.
-      sys.props(&quot;sbt.paths.scalafixNsc.test.classes&quot;)) {
+    extends SemanticRewriteSuite( /* optionally pass in custom classpath */ ) {
   // directory containing .source files
   val testDir = &quot;scalafix-tests/src/test/resources&quot;
   DiffTest.fromFile(new java.io.File(testDir)).foreach(runDiffTest)
-}</code><a class=" scalatex-site-Styles-headerLink" style="position: absolute;right: 0.5em;top: 0.5em;display: block;font-size: 24px;" href="https://github.com/scalacenter/scalafix/tree/master/scalafix-tests/src/test/scala/scalafix/tests/SemanticTests.scala#L0-L13" target="_blank"><i class="fa fa-link "></i></a></pre>
+}</code><a class=" scalatex-site-Styles-headerLink" style="position: absolute;right: 0.5em;top: 0.5em;display: block;font-size: 24px;" href="https://github.com/scalacenter/scalafix/tree/master/scalafix-tests/src/test/scala/scalafix/tests/SemanticTests.scala#L0-L10" target="_blank"><i class="fa fa-link "></i></a></pre>
 </p>
   <p>
     Define <code>.scalafix.conf</code> configuration at the top of a <code>.source</code> file:
@@ -607,13 +606,13 @@ object ExpectedCode
       <li>
         NOTE.
         scalafix-core and scalafix-cli are now published as
-        <code>CrossVersion.full</code>, meaning the artifact IDs now have a <code>_2.11.10</code> suffix. To depend on them,
+        <code>CrossVersion.full</code>, meaning the artifact IDs now have a <code>_2.11.11</code> suffix. To depend on them,
         <pre><code class="scala scalatex-site-Styles-highlightMe">// OK
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+1-cbaa8646&quot; cross CrossVersion.full
+  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+24-b98411b0&quot; cross CrossVersion.full
 // Error
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4+1-cbaa8646&quot;</code></pre></li>
+  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4+24-b98411b0&quot;</code></pre></li>
       <li>
         NOTE.
         This version depends on a pre-release of scala.meta, which is publised
@@ -741,4 +740,4 @@ libraryDependencies +=
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
