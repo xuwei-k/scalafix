@@ -96,7 +96,7 @@ span.hljs-tag, span.hljs-symbol{
     to add IDE integrations in the future.
 </p>
   <h1 id="sbt-scalafix" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt-scalafix" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt-scalafix</h1>
-    sbt-scalafix is an integration to run pre-made scalafix rewrites as sbt commands.
+    The sbt-plugin is the recommended integration for semantic rewrites.
 
     <pre><code class="scala scalatex-site-Styles-highlightMe">addSbtPlugin(&quot;ch.epfl.scala&quot; % &quot;sbt-scalafix&quot; % &quot;0.3.4&quot;)
 </code></pre>
@@ -114,49 +114,10 @@ span.hljs-tag, span.hljs-symbol{
         Scalafix supports 2.11 and 2.12.
         Projects with <code>scalaVersion</code> 2.10 are ignored by scalafix.
 </li></ul>
-  <h1 id="sbt-scalahost" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#sbt-scalahost" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>sbt-scalahost</h1>
-    sbt-scalahost is an integration to run custom scalafix rewrites using the scala.meta
-    semantic API.
-
-    <pre><code class="scala scalatex-site-Styles-highlightMe">// project/plugins.sbt
-addSbtPlugin(&quot;org.scalameta&quot; % &quot;sbt-scalahost&quot; % &quot;1.7.0&quot;)
-
-// build.sbt
-val rewrites = project
-  .settings(
-    scalaVersion := &quot;2.11.8&quot;, // 2.12.x is also supported
-    libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4&quot; cross CrossVersion.full
-  )
-  .dependsOn(
-    projectToPerformRewritesOn % Scalameta
-  )
-
-// in rewrites/src/main/scala/Rewrites.scala
-...
-implicit mirror = scala.meta.Mirror()
-val source = mirror.sources.head
-val ctx = scalafix.rewrite.RewriteCtx(source,
-  scalafix.config.ScalafixConfig(), mirror)
-val patched = Patch(source, Seq(
-  scalafix.util.TreePatch.AddGlobalImport(
-    importer&quot;scala.collection.immutable.Seq&quot;))
-)
-...
-</code></pre>
-    For more information about sbt-scalahost, see
-    <a href="https://github.com/scalameta/sbt-semantic-example">sbt-semantic-example</a>.
-    For more information about using scalafix as a library, see <a href="#scalafix-core">scalafix-core</a>.
-
   <h1 id="scalafix-core" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix-core" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix-core</h1>
     Scalafix can be used as a library to run custom rewrites.
-    <pre><code class="scala scalatex-site-Styles-highlightMe">// &lt; 0.3.3
-libraryDependencies += &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4&quot;
-// 0.3.3 and onwards
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4&quot; cross CrossVersion.full
+    <pre><code class="scala scalatex-site-Styles-highlightMe">libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4&quot; cross CrossVersion.full
 
-// pre-release version
-resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;)
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+30-cff7ae8f&quot; cross CrossVersion.full
 </code></pre>
     By using scalafix as a library, you have full control of how/when/where
     rewrites are written.
@@ -172,55 +133,43 @@ libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &
           Just create a <code>scalafix.rewrite.Rewrite[Any]</code> and go!</li>
         <li>
           <code>scala.meta.Mirror</code>, aka.
-          <a href="https://github.com/scalameta/scalameta/blob/master/changelog/1.6.0.md#semantic-api">scala.meta semantic API</a>.
-          See <a href="#sbt-scalahost">sbt-scalahost</a> on how to construct a <code>scala.meta.Mirror</code>.
+          <a href="https://github.com/scalameta/scalameta/blob/master/changelog/1.6.0.md#semantic-api">scalameta semantic API</a>.
+          See <a href="https://github.com/scalameta/sbt-semantic-example">sbt-semantic-example</a>
+          on how to construct a <code>scala.meta.Mirror</code>.
           Once you have a <code>Mirror</code> instance, you can create a
           <code>scalafix.rewrite.RewriteCtx[Mirror]</code> for each <code>scala.meta.Source</code> in
-          <code>scala.meta.Mirror.sources</code>.</li>
-        <li>
-          <code>scalafix.rewrite.ScalafixMirror</code>. This option is currently in
-          use by <a href="#sbt-scalafix">sbt-scalafix</a> but is being phased out in favor of
-          <code>Mirror</code>. <code>ScalafixMirror</code> extends <code>Mirror</code> with a
-          few custom methods that we will try to eventually contribute upstream
-          to <code>Mirror</code>.
-          <p>
-            It is possible to run custom rewrites using <code>ScalafixMirror</code>, but
-            the setup is complex.
-            You need to ensure that your compiled rewrite is included in the compiler
-            classpath. Once the rewrite is in the compiler classpath, you
-            can enable your rewrite with
-            <code>rewrites = [_root_.fully.qualified.name.of.rewrite]</code>.
-            Note, your rewrite needs to be an <code>object</code>.
-            For more question about this option, don't hesitate to ask on Gitter.
-</p></li></ul></p>
+          <code>scala.meta.Mirror.sources</code>.</li></ul></p>
     <p>
       Scalafix as a library is still under heavy development.
       Feedback is very welcome.
       Be prepared for breaking changes.
 </p>
   <h1 id="scalafix-cli" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix-cli" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix-cli</h1>
-    <p>
-      A 16kb bootstrap script can be downloaded from <a href="https://github.com/scalacenter/scalafix/raw/master/scalafix">here</a>.
-      The script will download necessary dependencies on the first run.
-</p>
-    <p>
-      Alternatively, you can build the boostrap script yourself with
-      <a href="https://github.com/coursier/coursier#command-line">coursier</a>.
-      Once you have the <code>coursier</code> command-line installed, run
+    The recommended way to install the scalafix command-line interface is with
+    <a href="https://github.com/coursier/coursier#command-line">coursier</a>.
 
-      <pre><code class="scala scalatex-site-Styles-highlightMe">// pre-release
-coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.11:0.3.4+30-cff7ae8f -r bintray:scalameta/maven -r 'ivy:https://dl.bintray.com/scalameta/maven/[organisation]/[module]/(scala_[scalaVersion]/)(sbt_[sbtVersion]/)[revision]/[type]s/[artifact](-[classifier]).[ext]' -f --main scalafix.cli.Cli -o scalafix
+    <pre><code class="scala scalatex-site-Styles-highlightMe">// coursier
+coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.11:0.3.4 -f --main scalafix.cli.Cli -o scalafix
+./scalafix --help
+
+// homebrew
+brew install --HEAD olafurpg/scalafmt/scalafix
+scalafix --help
+
+// wget
+wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?raw=true
+./scalafix --help
 </code></pre>
-      <p>
-        The <code>fatcli</code> module depends on the <code>scalahost-nsc</code> compiler plugin
-        fatjar, making it unnecessary to pass in the <code>--scalahost-nsc-plugin-path</code>
-        flag.
+    <p>
+      The <code>fatcli</code> module depends on the <code>scalahost-nsc</code> compiler plugin
+      fatjar, making it unnecessary to pass in the <code>--scalahost-nsc-plugin-path</code>
+      flag.
 </p>
-      <p>
-        Once the scalafix cli is installed, consult the help page for further usage
-        instructions
-</p></p>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.4+30-cff7ae8f
+    <p>
+      Once the scalafix cli is installed, consult the help page for further usage
+      instructions
+</p>
+    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.4+34-f2501799
 Usage: scalafix [options]
   --usage  
         Print usage and exit
@@ -281,23 +230,24 @@ Exit status codes:
  ScalafixError=3
 </code></pre>
 
-  <h1 id="scalafix-nsc" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#scalafix-nsc" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>scalafix-nsc</h1>
-    <b>Note.</b> scalafix-nsc is being phased out in favor of scalahost-nsc.
+  <h1 id="cbt" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#cbt" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>cbt</h1>
+    There is an experimental
+    <a href="https://github.com/cvogt/cbt/blob/fb0c68ffab35db304771e177ce93f80a680fabcc/plugins/scalafix/Scalafix.scala">cbt plugin</a>
+    for scalafix.
 
-    <p>
-      Scalafix can be used directly as a compiler plugin:
-      <pre><code class="scala scalatex-site-Styles-highlightMe">// download
-https://repo1.maven.org/maven2/ch/epfl/scala/scalafix-nsc_2.12/0.3.4/scalafix-nsc_2.12-0.3.4.jar
-// compile
-scalac -Xplugin:/path/to/scalafix-nsc_2.12-0.3.4.jar mycode.scala
+  <h1 id="Pre-release" style="display: block;" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><a class=" scalatex-site-Styles-headerLink" href="#Pre-release" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a>Pre-release</h1>
+     Our CI infrastructure publishes a pre-release version on every merge into master.
+     These pre-releases make it possible to try out new scalafix features that have
+     not yet been officially released.
+
+     <pre><code class="scala scalatex-site-Styles-highlightMe">// sbt
+resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;) // necessary to resolve pre-release
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+34-f2501799&quot; cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-fatcli&quot; % &quot;0.3.4+34-f2501799&quot; cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+34-f2501799&quot; % Test cross CrossVersion.full
+// cli
+coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.11:0.3.4+34-f2501799 -r bintray:scalameta/maven -f --main scalafix.cli.Cli -o scalafix
 </code></pre>
-      <ul>
-        <li>
-          The compiler plugin writes fixes directly to source files during compilation.</li>
-        <li>
-          To specify a configuration file <code>-P:scalafix:/full/path/to/.scalafix.conf</code>.</li>
-        See <a href="#Configuration">Configuration</a> for more details.
-</ul></p>
 
   
 <div style="margin: 0px;color: #333;text-align: center;padding: 2.5em 2em 0;border-bottom: 1px solid #eee;display: block;" id="Configuration" class=" scalatex-site-Styles-hoverContainer scalatex-site-Styles-headerTag"><h1 style="margin: 0.2em 0;font-size: 3em;font-weight: 300;">Configuration<a class=" scalatex-site-Styles-headerLink" href="#Configuration" style="position: absolute;right: 0px;"><i class="fa fa-link"></i></a></h1><br /></div>
@@ -381,11 +331,11 @@ debug.printSymbols = true</code></pre>
     <pre><code class="scala scalatex-site-Styles-highlightMe">patches.removeGlobalImports = []
 patches.addGlobalImports = []
 patches.replacements = []
-reporter.outStream = java.io.PrintStream@505f79f1
+reporter.outStream = java.io.PrintStream@295950b
 reporter.minSeverity = &quot;[34minfo[0m&quot;
 reporter.filter.&quot;.*&quot;
 reporter.includeLoggerName = false
-parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@39dd3593
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@c8a29a0
 debug.printSymbols = false
 fatalWarnings = true
 rewrite = empty
@@ -498,7 +448,7 @@ trait A {
     scalafix-testkit
 
     <pre><code class="scala scalatex-site-Styles-highlightMe">resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;)
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+30-cff7ae8f&quot; % Test cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+34-f2501799&quot; % Test cross CrossVersion.full
 </code></pre></p>
   <p>
     Tests are written in <code>.source</code> text files in some directory
@@ -625,10 +575,10 @@ object ExpectedCode
         <code>CrossVersion.full</code>, meaning the artifact IDs now have a <code>_2.11.11</code> suffix. To depend on them,
         <pre><code class="scala scalatex-site-Styles-highlightMe">// OK
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+30-cff7ae8f&quot; cross CrossVersion.full
+  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+34-f2501799&quot; cross CrossVersion.full
 // Error
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4+30-cff7ae8f&quot;</code></pre></li>
+  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4+34-f2501799&quot;</code></pre></li>
       <li>
         NOTE.
         This version depends on a pre-release of scala.meta, which is publised
@@ -746,7 +696,7 @@ libraryDependencies +=
 
 </div><script>
     scalatex.scrollspy.Controller().main(
-      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"sbt-scalahost","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-cli","children":[]},{"value":"scalafix-nsc","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[{"value":"Pre-made rewrites","children":[]},{"value":"Custom rewrites","children":[]}]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"All options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"ExplicitUnit","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"scalafix-testkit","children":[]},{"value":"FAQ / Troubleshooting","children":[{"value":"Enclosing tree [2873] does not include tree [2872]","children":[]},{"value":"sbt.Init$RuntimeUndefined: References to undefined settings at runtime.","children":[]},{"value":"(root/compile:compileIncremental) java.lang.reflect.InvocationTargetException","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.4","children":[]},{"value":"0.3.3","children":[]},{"value":"0.3.2","children":[]},{"value":"0.3.1","children":[]},{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
+      [{"value":"scalafix - a Scala rewrite tool","children":[{"value":"Links","children":[]},{"value":"Installation","children":[{"value":"sbt-scalafix","children":[]},{"value":"scalafix-core","children":[]},{"value":"scalafix-cli","children":[]},{"value":"cbt","children":[]},{"value":"Pre-release","children":[]}]},{"value":"Configuration","children":[{"value":"rewrites","children":[{"value":"Pre-made rewrites","children":[]},{"value":"Custom rewrites","children":[]}]},{"value":"imports","children":[]},{"value":"patches","children":[]},{"value":"All options","children":[]}]},{"value":"Rewrites","children":[{"value":"ExplicitImplicit","children":[]},{"value":"ProcedureSyntax","children":[]},{"value":"VolatileLazyVal","children":[]},{"value":"ExplicitUnit","children":[]},{"value":"Planned rewrites...","children":[]}]},{"value":"scalafix-testkit","children":[]},{"value":"FAQ / Troubleshooting","children":[{"value":"Enclosing tree [2873] does not include tree [2872]","children":[]},{"value":"sbt.Init$RuntimeUndefined: References to undefined settings at runtime.","children":[]},{"value":"(root/compile:compileIncremental) java.lang.reflect.InvocationTargetException","children":[]}]},{"value":"Changelog","children":[{"value":"0.3.4","children":[]},{"value":"0.3.3","children":[]},{"value":"0.3.2","children":[]},{"value":"0.3.1","children":[]},{"value":"0.3.0","children":[]},{"value":"0.2.1","children":[]},{"value":"0.2.0","children":[]},{"value":"0.1.0","children":[]}]}]}]
   )</script><script>
     ['DOMContentLoaded', 'load'].forEach(function(ev){
       addEventListener(ev, function(){
@@ -756,4 +706,4 @@ libraryDependencies +=
         );
       })
     })
-  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+  </script></body></html>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
