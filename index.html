@@ -169,7 +169,7 @@ wget -O scalafix https://github.com/scalacenter/scalafix/blob/master/scalafix?ra
       Once the scalafix cli is installed, consult the help page for further usage
       instructions
 </p>
-    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.4+43-8542e031
+    <pre><code class="scala scalatex-site-Styles-highlightMe">scalafix 0.3.4+44-1091b539
 Usage: scalafix [options]
   --usage  
         Print usage and exit
@@ -237,11 +237,11 @@ Exit status codes:
 
      <pre><code class="scala scalatex-site-Styles-highlightMe">// sbt
 resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;) // necessary to resolve pre-release
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+43-8542e031&quot; cross CrossVersion.full
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-fatcli&quot; % &quot;0.3.4+43-8542e031&quot; cross CrossVersion.full
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+43-8542e031&quot; % Test cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+44-1091b539&quot; cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-fatcli&quot; % &quot;0.3.4+44-1091b539&quot; cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+44-1091b539&quot; % Test cross CrossVersion.full
 // cli
-coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.11:0.3.4+43-8542e031 -r bintray:scalameta/maven -f --main scalafix.cli.Cli -o scalafix
+coursier bootstrap ch.epfl.scala:scalafix-fatcli_2.11.11:0.3.4+44-1091b539 -r bintray:scalameta/maven -f --main scalafix.cli.Cli -o scalafix
 </code></pre>
 
   
@@ -326,11 +326,11 @@ debug.printSymbols = true</code></pre>
     <pre><code class="scala scalatex-site-Styles-highlightMe">patches.removeGlobalImports = []
 patches.addGlobalImports = []
 patches.replacements = []
-reporter.outStream = java.io.PrintStream@65db579f
+reporter.outStream = java.io.PrintStream@7190f52d
 reporter.minSeverity = &quot;[34minfo[0m&quot;
 reporter.filter.&quot;.*&quot;
 reporter.includeLoggerName = false
-parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@11f2fee5
+parser = scala.meta.internal.parsers.ScalametaParser$$anon$202@1fef8dfb
 debug.printSymbols = false
 fatalWarnings = true
 dialect = Scala211
@@ -442,7 +442,7 @@ trait A {
     scalafix-testkit
 
     <pre><code class="scala scalatex-site-Styles-highlightMe">resolvers += Resolver.bintrayRepo(&quot;scalameta&quot;, &quot;maven&quot;)
-libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+43-8542e031&quot; % Test cross CrossVersion.full
+libraryDependencies += &quot;ch.epfl.scala&quot; % &quot;scalafix-testkit&quot; % &quot;0.3.4+44-1091b539&quot; % Test cross CrossVersion.full
 </code></pre></p>
   <p>
     Tests are written in <code>.source</code> text files in some directory
@@ -569,10 +569,10 @@ object ExpectedCode
         <code>CrossVersion.full</code>, meaning the artifact IDs now have a <code>_2.11.11</code> suffix. To depend on them,
         <pre><code class="scala scalatex-site-Styles-highlightMe">// OK
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+43-8542e031&quot; cross CrossVersion.full
+  &quot;ch.epfl.scala&quot; % &quot;scalafix-core&quot; % &quot;0.3.4+44-1091b539&quot; cross CrossVersion.full
 // Error
 libraryDependencies +=
-  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4+43-8542e031&quot;</code></pre></li>
+  &quot;ch.epfl.scala&quot; %% &quot;scalafix-core&quot; % &quot;0.3.4+44-1091b539&quot;</code></pre></li>
       <li>
         NOTE.
         This version depends on a pre-release of scala.meta, which is publised
