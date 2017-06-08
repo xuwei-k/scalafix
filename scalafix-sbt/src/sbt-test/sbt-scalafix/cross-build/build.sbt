@@ -1,12 +1,4 @@
 updateOptions in ThisBuild := updateOptions.value.withLatestSnapshots(false)
-lazy val root = project
-  .in(file("."))
-  .aggregate(
-    customSourceroot,
-    scala211,
-    scala210,
-    scala212
-  )
 
 lazy val scala210 = project.settings(scalaVersion := "2.10.5")
 lazy val scala211 = project.settings(scalaVersion := "2.11.11")
