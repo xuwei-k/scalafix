@@ -106,7 +106,6 @@ lazy val testkit = project
     libraryDependencies ++= Seq(
       semanticdb,
       googleDiff,
-      scalacheck,
       scalatest
     )
   )
@@ -120,7 +119,7 @@ lazy val unit = project
     javaOptions := Nil,
     buildInfoPackage := "scalafix.tests",
     buildInfoObject := "BuildInfo",
-    libraryDependencies ++= coursierDeps ++ testsDeps,
+    libraryDependencies ++= coursierDeps,
     libraryDependencies ++= List(
       jgit,
       scalatest

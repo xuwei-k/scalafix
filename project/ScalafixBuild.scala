@@ -61,8 +61,7 @@ object ScalafixBuild extends AutoPlugin with GhpagesKeys {
 
     lazy val testsInputOutputSetting = Seq(
       // TODO: Remove once scala-xml-quote is merged into scala-xml
-      resolvers += Resolver.bintrayRepo("allanrenucci", "maven"),
-      libraryDependencies ++= testsDeps
+      resolvers += Resolver.bintrayRepo("allanrenucci", "maven")
     )
 
     lazy val semanticdbSettings = Seq(
@@ -159,7 +158,6 @@ object ScalafixBuild extends AutoPlugin with GhpagesKeys {
     scalacOptions ++= compilerOptions,
     scalacOptions in (Compile, console) := compilerOptions :+ "-Yrepl-class-based",
     libraryDependencies ++= List(
-      scalacheck % Test,
       scalatest % Test
     ),
     resolvers ++= List(
