@@ -31,8 +31,6 @@ object Dependencies {
     // integration property tests
     "org.renucci" %% "scala-xml-quote" % "0.1.4",
     "org.typelevel" %% "catalysts-platform" % "0.0.5",
-    "org.typelevel" %% "cats-core" % "0.9.0",
-    "com.typesafe.slick" %% "slick" % "3.2.0-M2",
     "com.chuusai" %% "shapeless" % "2.3.2",
     scalacheck
   )
